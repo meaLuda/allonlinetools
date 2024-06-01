@@ -86,7 +86,6 @@ func ToolsRoutes(app *fiber.App) {
 
 func main() {
 	//// Initialize database and app
-	// db.Init()
 	err := initApp()
 	if err != nil {
 		log.Fatal(err)

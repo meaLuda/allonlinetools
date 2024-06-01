@@ -35,20 +35,6 @@ func DBInstance() *mongo.Client {
 // Create global client
 var Client *mongo.Client = DBInstance()
 
-// Disconnect from MongoDB when the program exits
-func Init() {
-	if Client == nil {
-		return
-	}
-
-	// Clean up the client connection when the program exits
-	defer func() {
-		if err := Client.Disconnect(context.TODO()); err != nil {
-			log.Println("Error closing MongoDB connection:", err)
-		}
-	}()
-}
-
 // OpenCollection is a function that makes a connection with a collection in the database
 func OpenCollection(collectionName string) *mongo.Collection {
 	log.Printf("Created Collection: %v", collectionName)

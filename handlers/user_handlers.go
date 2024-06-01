@@ -5,7 +5,7 @@ import (
 	"allonlinetools/sessionstore"
 	"allonlinetools/utils"
 	"context"
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -27,14 +27,10 @@ func NewUserController(collection *mongo.Collection, ctx context.Context) *UserC
 }
 
 func (uc *UserController) Handler_RenderSignUpPage(c *fiber.Ctx) error {
-	fmt.Println(c.Locals("csrf_token"))
-	// // Get CSRF token from session
-	// Get session from storage
 	sess, err := sessionstore.Store.Get(c)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("----------- Middleware Save Session token -------------------")
 	sess.Set("csrf_token", c.Locals("csrf_token"))
 	sess.Save()
 	return c.Render("home/pages/signup",  fiber.Map{
@@ -50,20 +46,6 @@ func (uc *UserController) CreateUser(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Bad Request")
 	}
 
-	// RETRIEVE AND PRINT ALL USERS
-	// RETRIEVE AND PRINT ALL USERS
-	var users []models.User
-	cursor, err := uc.collection.Find(uc.ctx, bson.M{})
-	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, "Error retrieving users")
-	}
-	if err := cursor.All(uc.ctx, &users); err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, "Error decoding users")
-	}
-	for _, user := range users {
-		fmt.Println(user)
-	}
-
 	//// Process form data and create user
 	hashedPassword, err := utils.HashPassword(signupReq.Password)
 	if err != nil {
@@ -77,27 +59,23 @@ func (uc *UserController) CreateUser(c *fiber.Ctx) error {
 	user.Email = signupReq.Email
 	user.Phone = signupReq.Phone
 	user.Password = hashedPassword
-	// fmt.Println(user)
 
 	resp, err := uc.collection.InsertOne(uc.ctx, user)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return fiber.NewError(fiber.StatusInternalServerError, "Could not create user")
 	}
-	fmt.Println(resp)
+	log.Println(resp)
 	return c.Redirect("/auth/login")
 }
 
 
 func (uc *UserController) Handler_RenderLoginPage(c *fiber.Ctx) error {
-	fmt.Println(c.Locals("csrf_token"))
-
 	// Get session from storage
 	sess, err := sessionstore.Store.Get(c)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("----------- Middleware Save Session token -------------------")
 	sess.Set("csrf_token", c.Locals("csrf_token"))
 	sess.Save()
 	return c.Render("home/pages/login", fiber.Map{

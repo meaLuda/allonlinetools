@@ -3,7 +3,6 @@ package middleware
 import (
 	"crypto/rand"
 	"encoding/base64"
-	"fmt"
 	"github.com/gofiber/fiber/v2"
 
     "allonlinetools/sessionstore" // global session store
@@ -37,8 +36,6 @@ func CSRFProtection() fiber.Handler {
         csrfToken := c.Get(csrfTokenHeader)
         if csrfToken == "" {
             csrfToken = c.FormValue("csrf_token")
-            fmt.Println("----------- Middleware csrfToken -------------------")
-            fmt.Println(csrfToken)
         }
         
         // Get session from storage
@@ -51,7 +48,7 @@ func CSRFProtection() fiber.Handler {
         // keys := sess.Keys()
         // fmt.Println(keys)
         local_token := sess.Get(csrfTokenLocal)
-        fmt.Println(local_token)
+
         if csrfToken == local_token {
             return c.Next()
         }
