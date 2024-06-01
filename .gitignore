@@ -1,3 +1,4 @@
 .air.toml
 *.exe
 /tmp
+.env
