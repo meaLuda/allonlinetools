@@ -1,0 +1,21 @@
+<div class="min-h-screen flex">
+  <div class="sidebar p-6 flex flex-col space-y-4">
+    <div class="btn-group flex flex-col space-y-2">
+      <button class="btn btn-primary" hx-get="/tools/images/rotate-image?image_name={{filename}}" hx-target="#uploaded-image" hx-swap="outerHTML">Rotate</button>
+      <button class="btn btn-primary" hx-get="/tools/images/flip-image?image_name={{filename}}" hx-target="#uploaded-image" hx-swap="outerHTML">Flip</button>
+    </div>
+    <div class="btn-group flex flex-col space-y-2">
+      <button class="btn btn-outline btn-primary" hx-get="/tools/images/convert-jpeg?image_name={{filename}}" hx-target="#uploaded-image" hx-swap="outerHTML">Convert to JPEG</button>
+      <button class="btn btn-outline btn-primary" hx-get="/tools/images/convert-png?image_name={{filename}}" hx-target="#uploaded-image" hx-swap="outerHTML">Convert to PNG</button>
+      <button class="btn btn-outline btn-primary" hx-get="/tools/images/convert-gif?image_name={{filename}}" hx-target="#uploaded-image" hx-swap="outerHTML">Convert to GIF</button>
+    </div>
+    <div class="btn-group flex flex-col space-y-2">
+      <button class="btn btn-outline btn-primary" hx-get="/tools/images/adjust-brightness?image_name={{filename}}" hx-target="#uploaded-image" hx-swap="outerHTML">Adjust Brightness</button>
+      <button class="btn btn-outline btn-primary" hx-get="/tools/images/adjust-contrast?image_name={{filename}}" hx-target="#uploaded-image" hx-swap="outerHTML">Adjust Contrast</button>
+      <button class="btn btn-outline btn-primary" hx-get="/tools/images/adjust-saturation?image_name={{filename}}" hx-target="#uploaded-image" hx-swap="outerHTML">Adjust Saturation</button>
+    </div>
+  </div>
+  <figure class="px-10 pt-10" id="uploaded-image">
+    <img src="/static/uploads/{{filename}}" alt="Uploaded Image" class="rounded-xl">
+  </figure>
+</div>

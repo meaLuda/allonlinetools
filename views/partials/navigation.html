@@ -1,0 +1,43 @@
+<div class="w-full px-4 lg:container lg:mx-auto py-3">
+	<div class="flex sm:hidden justify-between items-center">
+		<div class="font-bold text-3xl">
+			<a href="/">Home</a>
+		</div>
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+				stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+			</svg>
+		</div>
+	</div>
+	<div class="hidden sm:flex justify-between items-center">
+		<div class="flex gap-10">
+			<div class="font-bold text-3xl flex items-center">
+				<a href="/" class="mr-4"> <!-- Added margin to create space between logo and "Home" link -->
+					<img class="rounded-lg h-6" src="/static/imgs/onlinetoolslogo.png" alt="Online Tools Logo" /> <!-- Added alt attribute for accessibility -->
+				</a>
+				<a href="/">Tools To Go 😎</a>
+			</div>
+			
+		</div>
+		<div>
+			{% if user_id %}
+			<ul class="menu menu-horizontal px-1">
+				<li>
+					<details class="z-50">
+						<summary>
+							
+						</summary>
+						<ul class="p-2 bg-base-800">
+							<li><a href="#">Sign out</a></li>
+						</ul>
+					</details>
+				</li>
+			</ul>
+			{% else %}
+			<a class="btn btn-info" href="/auth/signup">Sign up</a>
+			<a class="btn btn-neutral mr-4" href="/auth/login">Log In</a>
+			{% endif %}
+		</div>
+	</div>
+</div>

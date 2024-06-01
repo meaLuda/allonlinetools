@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AllOnlineTools.com - Your Online Toolbox ToGo 😎📌.</title>
+	<meta name="description" content="All web online tools in one go 😉">
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.0.9/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.8" integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr" crossorigin="anonymous"></script>
+	<style>
+        .tool-button {
+            @apply bg-blue-500 text-white font-bold py-2 px-4 rounded transition duration-300;
+        }
+        .tool-button:hover {
+            @apply bg-blue-700;
+        }
+    </style>
+	<script>
+		var url = window.location.href
+		if (url.includes("#")) {
+			var newURL = url.replace("#", "?")
+			window.location.href = newURL
+		}
+	</script>
+	{% block script %}
+	{% endblock %}
+</head>
+
+<body class="min-h-screen">
+	{% include "partials/navigation.html" %}
+	{% block content%}{% endblock %}
+
+
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+	<script>
+		$(document).ready(function() {
+			console.log('Page loaded');
+			// Your jQuery code here
+			{% block Jqscripts %}{% endblock %}
+		});
+	</script>
+</body>
