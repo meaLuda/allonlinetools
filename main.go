@@ -20,32 +20,27 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/joho/godotenv"
 
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/template/django/v3"
-	"github.com/joho/godotenv"
 )
 
 var (
 	userController *handlers.UserController
-	
+	Client *mongo.Client
 )
 
-func initApp() (error) {
+func initApp(){
 	if err := godotenv.Load(); err != nil {
 		panic(err)
 	}
-	var userCollection *mongo.Collection = db.OpenCollection("user")
+	log.Println(os.Getenv(""))
 	ctx := context.Background()
+	var userCollection *mongo.Collection = db.OpenCollection(db.DBInstance(),"user")
 
 	userController = handlers.NewUserController(userCollection, ctx)
-	
-	// Switch states according to the environment we are in.
-	weAreIn := os.Getenv("LOCAL_DEVELOPMENT")
-	log.Println(weAreIn)
 
-	
-	return nil
 }
 
 func createEngine() *django.Engine {
@@ -63,7 +58,15 @@ func createEngine() *django.Engine {
 		})
 		return
 	})
-
+	//// {{ "This is a long sentence" | truncate 10 "..." }} would output "This is a..."
+	engine.AddFunc("truncate", func(str string, length int, suffix string) string {
+		if len(str) <= length {
+			return str
+		}
+		return str[:length] + suffix
+	})
+	
+	
 	return engine
 }
 
@@ -85,11 +88,8 @@ func ToolsRoutes(app *fiber.App) {
 
 
 func main() {
+	initApp()
 	//// Initialize database and app
-	err := initApp()
-	if err != nil {
-		log.Fatal(err)
-	}
 	app := fiber.New(fiber.Config{
 		ErrorHandler:          handlers.ErrorHandler,
 		DisableStartupMessage: false,
@@ -149,12 +149,7 @@ func main() {
 
 
 
-	err = app.Listen(":3000")
-	if err != nil {
-		log.Fatal("Error in running the server")
-		return
-	}
-	log.Println("Server is running")
+	app.Listen(":3000")
 }
 
 

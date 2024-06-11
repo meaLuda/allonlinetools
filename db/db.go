@@ -12,12 +12,10 @@ import (
 
 // Database Instance
 func DBInstance() *mongo.Client {
-	MongoDBURL := os.Getenv("MONGODB_URL")
-	if MongoDBURL == "" {
-		MongoDBURL = "mongodb://luda:pass123@localhost:27015/auth-server?authSource=admin"
-	}
+	MongoDBURI := os.Getenv("MongoDBURI")
+	fmt.Println(MongoDBURI)
 	ctx := context.Background()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(MongoDBURL))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(MongoDBURI))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,11 +30,8 @@ func DBInstance() *mongo.Client {
 	return client
 }
 
-// Create global client
-var Client *mongo.Client = DBInstance()
-
 // OpenCollection is a function that makes a connection with a collection in the database
-func OpenCollection(collectionName string) *mongo.Collection {
+func OpenCollection(Client *mongo.Client, collectionName string) *mongo.Collection {
 	log.Printf("Created Collection: %v", collectionName)
 	var collection *mongo.Collection = Client.Database("auth-server").Collection(collectionName)
 
